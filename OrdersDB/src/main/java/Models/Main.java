@@ -95,14 +95,12 @@ public class Main {
         String model = sc.nextLine();
         System.out.print("Enter price: ");
         double price = Double.parseDouble(sc.nextLine());
-        System.out.print("Enter description: ");
-        String desc = sc.nextLine();
 
         try {
             em = emf.createEntityManager();
             em.getTransaction().begin();
-            Good good = new Good(type, brand, model, price, desc);
-            em.persist(good);
+            Goods goods = new Goods(type, brand, model, price);
+            em.persist(goods);
             em.getTransaction().commit();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -115,8 +113,16 @@ public class Main {
         System.out.println("Enter information about order:");
         System.out.print("Enter goods id: ");
         int goodID = Integer.parseInt(sc.nextLine());
+        if (!isGoodsExist(goodID)) {
+            System.out.println("---!!!There is no goods with ID " + goodID+"!!!---");
+            return;
+        }
         System.out.print("Enter user id: ");
         int userID = Integer.parseInt(sc.nextLine());
+        if (!isUserExist(userID)) {
+            System.out.println("---!!!There is no user with ID " + userID+"!!!---");
+            return;
+        }
         System.out.print("Enter order name: ");
         String orderName = sc.nextLine();
 
@@ -151,10 +157,10 @@ public class Main {
     private static void viewGoods() {
         try {
             em = emf.createEntityManager();
-            Query query = em.createQuery("SELECT g FROM Good g", Good.class);
-            List<Good> list = (List<Good>) query.getResultList();
+            Query query = em.createQuery("SELECT g FROM Goods g", Goods.class);
+            List<Goods> list = (List<Goods>) query.getResultList();
 
-            for (Good g : list)
+            for (Goods g : list)
                 System.out.println(g);
         } catch (Exception e) {
             e.printStackTrace();
@@ -176,5 +182,25 @@ public class Main {
         } finally {
             em.close();
         }
+    }
+
+    private static boolean isGoodsExist(int id) {
+        EntityManager isExistEM = emf.createEntityManager();
+        Goods g = isExistEM.find(Goods.class, id);
+        isExistEM.close();
+        if (g == null) {
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean isUserExist(int id) {
+        EntityManager isExistEM = emf.createEntityManager();
+        User u = isExistEM.find(User.class, id);
+        isExistEM.close();
+        if (u == null) {
+            return false;
+        }
+        return true;
     }
 }

@@ -9,13 +9,13 @@ import jakarta.persistence.Table;
 @Table(name = "orders")
 public class Order {
     private int ID;
-    private int goodID;
+    private int goodsID;
     private int userID;
     private String orderName;
     private boolean isValid = true;
 
-    public Order(int goodID, int userID, String orderName) {
-        this.goodID = goodID;
+    public Order(int goodsID, int userID, String orderName) {
+        this.goodsID = goodsID;
         this.userID = userID;
         this.orderName = orderName;
     }
@@ -33,12 +33,12 @@ public class Order {
         this.ID = ID;
     }
 
-    public int getGoodID() {
-        return goodID;
+    public int getGoodsID() {
+        return goodsID;
     }
 
-    public void setGoodID(int goodID) {
-        this.goodID = goodID;
+    public void setGoodsID(int goodID) {
+        this.goodsID = goodID;
     }
 
     public int getUserID() {
@@ -69,7 +69,7 @@ public class Order {
     public String toString() {
         return "Order{" +
                 "ID=" + ID +
-                ", goodID=" + goodID +
+                ", goodID=" + goodsID +
                 ", userID=" + userID +
                 ", orderName='" + orderName + '\'' +
                 ", isValid=" + isValid +
